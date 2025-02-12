@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'welcome_screen.dart'; // Import Welcome Page
+import 'welcome_screen.dart';
+import 'view_details.dart';
+import 'add_details.dart';
 
 class HomeScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,11 +15,10 @@ class HomeScreen extends StatelessWidget {
       Fluttertoast.showToast(
           msg: "Logged Out Successfully", backgroundColor: Colors.blueAccent);
 
-      // Navigate to Welcome Screen and remove all previous screens
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => WelcomeScreen()),
-        (route) => false, // Removes all previous routes
+        (route) => false,
       );
     }
   }
@@ -51,14 +52,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the current user
     User? user = _auth.currentUser;
-
-    // Get the user's name or email if the name is null
     String userName = user?.displayName ?? user?.email ?? "User";
 
     return Scaffold(
-      backgroundColor: Colors.black, // Dark background
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Home", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,
@@ -92,7 +90,47 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 30),
 
-            // Logout Button with Modern Styling
+            // Add Details Button
+            ElevatedButton.icon(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddDetailsScreen()),
+              ),
+              icon: Icon(Icons.add, color: Colors.white),
+              label: Text("Add Details",
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                elevation: 5,
+              ),
+            ),
+            SizedBox(height: 15),
+
+            // View Details Button
+            ElevatedButton.icon(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewDetailsScreen()),
+              ),
+              icon: Icon(Icons.visibility, color: Colors.white),
+              label: Text("View Details",
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                elevation: 5,
+              ),
+            ),
+            SizedBox(height: 15),
+
+            // Logout Button
             ElevatedButton.icon(
               onPressed: () => logout(context),
               icon: Icon(Icons.logout, color: Colors.white),
